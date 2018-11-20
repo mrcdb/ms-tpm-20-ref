@@ -152,7 +152,7 @@
 
 // Table 0:7 - Defines for Implementation Values
 #define FIELD_UPGRADE_IMPLEMENTED       NO
-#define RADIX_BITS                      32
+#define RADIX_BITS                      64
 #define HASH_ALIGNMENT                  4
 #define SYMMETRIC_ALIGNMENT             4
 #ifdef USE_WOLFCRYPT
