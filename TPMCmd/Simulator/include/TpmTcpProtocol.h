@@ -109,4 +109,9 @@ typedef struct out_buffer
     _OUTPUT_BUFFER   Buffer;
 } _OUT_BUFFER;
 
+#ifndef WIN32
+typedef unsigned long        DWORD;
+typedef void                *LPVOID;
+#endif
+
 #endif
