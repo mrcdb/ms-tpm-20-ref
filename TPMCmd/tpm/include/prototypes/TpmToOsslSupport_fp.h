@@ -34,7 +34,7 @@
  */
 /*(Auto-generated)
  *  Created by TpmPrototypes; Version 3.0 July 18, 2017
- *  Date: Oct 24, 2018  Time: 03:12:22PM
+ *  Date: Jan 28, 2019  Time: 12:39:25AM
  */
 
 #ifndef    _TPMTOOSSLSUPPORT_FP_H_
@@ -61,7 +61,23 @@ OsslContextEnter(
 // This is the companion function to OsslContextEnter().
 void
 OsslContextLeave(
-    BN_CTX          *context
+    BN_CTX          *CTX
+    );
+
+//*** OsslPushContext()
+// This function is used to create a frame in a context. All values allocated within
+// this context after the frame is started will be automatically freed when the
+// context (OsslPopContext()
+BN_CTX *
+OsslPushContext(
+    BN_CTX          *CTX
+    );
+
+//*** OsslPopContext()
+// This is the companion function to OsslPushContext().
+void
+OsslPopContext(
+    BN_CTX          *CTX
     );
 #endif // MATH_LIB == OSSL
 

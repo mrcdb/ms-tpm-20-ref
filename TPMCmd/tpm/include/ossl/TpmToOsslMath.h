@@ -46,9 +46,22 @@
 
 #include <openssl/evp.h>
 #include <openssl/ec.h>
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
-#include <openssl/bn_lcl.h>
-#endif
+#if OPENSSL_VERSION_NUMBER >= 0x10200000L
+    // Check the bignum_st definition in crypto/bn/bn_lcl.h and either update the
+    // version check or provide the new definition for this version.
+#   error Untested OpenSSL version
+#elif OPENSSL_VERSION_NUMBER >= 0x10100000L
+    // from crypto/bn/bn_lcl.h
+    struct bignum_st {
+        BN_ULONG *d;                /* Pointer to an array of 'BN_BITS2' bit
+                                    * chunks. */
+        int top;                    /* Index of last used d +1. */
+                                    /* The next are internal book keeping for bn_expand. */
+        int dmax;                   /* Size of the d array. */
+        int neg;                    /* one if the number is negative */
+        int flags;
+    };
+#endif // OPENSSL_VERSION_NUMBER
 #include <openssl/bn.h>
 
 //** Macros and Defines
@@ -57,7 +70,7 @@
 #if    defined THIRTY_TWO_BIT && (RADIX_BITS != 32)  \
     || ((defined SIXTY_FOUR_BIT_LONG || defined SIXTY_FOUR_BIT) \
         && (RADIX_BITS != 64))
-#  error "Ossl library is using different radix"
+#   error Ossl library is using different radix
 #endif
 
 // Allocate a local BIGNUM value. For the allocation, a bigNum structure is created
@@ -88,23 +101,25 @@ typedef OSSL_CURVE_DATA      *bigCurve;
 
 #define AccessCurveData(E)      ((E)->C)
 
-#define CURVE_INITIALIZED(name, initializer)                        \
-    OSSL_CURVE_DATA     _##name;                                 \
-    bigCurve            name =  BnCurveInitialize(&_##name, initializer)
 
 #include "TpmToOsslSupport_fp.h"
 
-#define CURVE_FREE(E)                   \
-    if(E != NULL)                       \
-    {                                   \
-        if(E->G != NULL)                \
-            EC_GROUP_free(E->G);        \
-        OsslContextLeave(E->CTX);       \
-    }
+// Start and end a context within which the OpenSSL memory management works
+#define OSSL_ENTER()    BN_CTX          *CTX = OsslContextEnter()
+#define OSSL_LEAVE()    OsslContextLeave(CTX)
 
-#define OSSL_ENTER()     BN_CTX      *CTX = OsslContextEnter()
+// Start and end a context that spans multiple ECC functions. This is used so that
+// the group for the curve can persist across multiple frames.
+#define CURVE_INITIALIZED(name, initializer)                        \
+    OSSL_CURVE_DATA     _##name;                                 \
+    bigCurve            name =  BnCurveInitialize(&_##name, initializer)
+#define CURVE_FREE(name)               BnCurveFree(name)
 
-#define OSSL_LEAVE()     OsslContextLeave(CTX)
+// Start and end a local stack frame within the context of the curve frame 
+#define ECC_ENTER()     BN_CTX         *CTX = OsslPushContext(E->CTX)
+#define ECC_LEAVE()     OsslPopContext(CTX)
+
+#define BN_NEW()        BnNewVariable(CTX)
 
 // This definition would change if there were something to report
 #define MathLibSimulationEnd()

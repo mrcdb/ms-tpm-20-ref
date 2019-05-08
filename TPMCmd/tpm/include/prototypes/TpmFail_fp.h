@@ -34,7 +34,7 @@
  */
 /*(Auto-generated)
  *  Created by TpmPrototypes; Version 3.0 July 18, 2017
- *  Date: Sep 25, 2018  Time: 04:08:04PM
+ *  Date: Jan 28, 2019  Time: 12:39:26AM
  */
 
 #ifndef    _TPMFAIL_FP_H_
@@ -48,6 +48,19 @@ SetForceFailureMode(
     void
     );
 #endif
+
+//*** TpmLogFailure()
+// This function saves the failure values when the code will continue to operate. It
+// if similar to TpmFail() but returns to the caller. The assumption is that the
+// caller will propagate a failure back up the stack.
+void
+TpmLogFailure(
+#if FAIL_TRACE
+    const char      *function,
+    int              line,
+#endif
+    int              code
+);
 
 //*** TpmFail()
 // This function is called by TPM.lib when a failure occurs. It will set up the

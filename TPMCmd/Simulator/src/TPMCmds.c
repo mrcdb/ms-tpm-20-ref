@@ -43,9 +43,24 @@
 #include <stdint.h>
 #include <ctype.h>
 #include <string.h>
+#include "BaseTypes.h"
 
+#ifdef _MSC_VER
 #include <windows.h>
 #include <winsock.h>
+#elif defined(__unix__)
+#define _strcmpi strcasecmp
+typedef int SOCKET;
+#else
+#error "Unsupported platform."
+#endif
+
+#ifndef TRUE
+#define TRUE    1
+#endif
+#ifndef FALSE
+#define FALSE   0
+#endif
 
 #include "TpmTcpProtocol.h"
 #include "Manufacture_fp.h"

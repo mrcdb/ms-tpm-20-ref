@@ -34,7 +34,7 @@
  */
 /*(Auto-generated)
  *  Created by TpmPrototypes; Version 3.0 July 18, 2017
- *  Date: Oct 22, 2018  Time: 11:31:57PM
+ *  Date: Jan 28, 2019  Time: 12:39:25AM
  */
 
 #ifndef    _RSAKEYCACHE_FP_H_
@@ -55,7 +55,8 @@ RsaKeyCacheControl(
 //      FALSE(0)        key not loaded
 BOOL
 GetCachedRsaKey(
-    OBJECT              *key,
+    TPMT_PUBLIC         *publicArea,
+    TPMT_SENSITIVE      *sensitive,
     RAND_STATE          *rand               // IN: if not NULL, the deterministic
                                             //     RNG state
     );
