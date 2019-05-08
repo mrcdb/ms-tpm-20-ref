@@ -34,13 +34,13 @@
  */
 /*(Auto-generated)
  *  Created by TpmPrototypes; Version 3.0 July 18, 2017
- *  Date: Oct  2, 2018  Time: 11:32:55AM
+ *  Date: Jan 28, 2019  Time: 12:39:25AM
  */
 
 #ifndef    _CRYPTECCMAIN_FP_H_
 #define    _CRYPTECCMAIN_FP_H_
 
-#if     ALG_ECC
+#if ALG_ECC
 
 #if SIMULATION
 void
@@ -97,6 +97,12 @@ const ECC_CURVE_DATA *
 GetCurveData(
     TPM_ECC_CURVE        curveId     // IN: the curveID
     );
+
+//***CryptEccGetOID()
+const BYTE *
+CryptEccGetOID(
+    TPM_ECC_CURVE       curveId
+);
 
 //*** CryptEccGetCurveByIndex()
 // This function returns the number of the 'i'-th implemented curve. The normal

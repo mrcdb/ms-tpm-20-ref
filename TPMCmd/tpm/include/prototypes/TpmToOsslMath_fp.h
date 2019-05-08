@@ -34,7 +34,7 @@
  */
 /*(Auto-generated)
  *  Created by TpmPrototypes; Version 3.0 July 18, 2017
- *  Date: Oct 24, 2018  Time: 03:14:15PM
+ *  Date: Jan 28, 2019  Time: 12:39:25AM
  */
 
 #ifndef    _TPMTOOSSLMATH_FP_H_
@@ -50,7 +50,7 @@
 //      TRUE(1)         success
 //      FALSE(0)        failure because value will not fit or OpenSSL variable doesn't
 //                      exist
-void
+BOOL
 OsslToTpmBn(
     bigNum          bn,
     BIGNUM          *osslBn
@@ -65,8 +65,9 @@ BigInitialized(
     BIGNUM             *toInit,
     bigConst            initializer
     );
-
 #if LIBRARY_COMPATIBILITY_CHECK
+
+//*** MathLibraryCompatibilityCheck()
 void
 MathLibraryCompatibilityCheck(
     void
@@ -113,7 +114,7 @@ BnDiv(
     bigConst             divisor
     );
 
-#if     ALG_RSA
+#if ALG_RSA
 //*** BnGcd()
 // Get the greatest common divisor of two numbers
 //  Return Type: BOOL
@@ -152,7 +153,7 @@ BnModInverse(
     bigConst             modulus
     );
 #endif // ALG_RSA
-#if     ALG_ECC
+#if ALG_ECC
 
 //*** BnCurveInitialize()
 // This function initializes the OpenSSL curve information structure. This
@@ -162,10 +163,18 @@ BnModInverse(
 //      NULL        the TPM_ECC_CURVE is not valid or there was a problem in
 //                  in initializing the curve data
 //      non-NULL    points to 'E'
-bigCurve
+LIB_EXPORT bigCurve
 BnCurveInitialize(
     bigCurve          E,           // IN: curve structure to initialize
     TPM_ECC_CURVE     curveId      // IN: curve identifier
+);
+
+//*** BnCurveFree()
+// This function will free the allocated components of the curve and end the
+// frame in which the curve data exists
+LIB_EXPORT void
+BnCurveFree(
+    bigCurve                    E
 );
 
 //*** BnEccModMult()

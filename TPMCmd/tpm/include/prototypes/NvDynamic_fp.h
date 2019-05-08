@@ -34,7 +34,7 @@
  */
 /*(Auto-generated)
  *  Created by TpmPrototypes; Version 3.0 July 18, 2017
- *  Date: Sep 27, 2018  Time: 09:21:50PM
+ *  Date: Jan 28, 2019  Time: 12:39:25AM
  */
 
 #ifndef    _NVDYNAMIC_FP_H_
@@ -154,12 +154,24 @@ NvIndexCacheInit(
 // of the Index is SET.
 void
 NvGetIndexData(
-    NV_INDEX        *nvIndex,       // IN: the in RAM index descriptor
-    NV_REF           locator,       // IN: where the data is located
-    UINT32           offset,        // IN: offset of NV data
-    UINT16           size,          // IN: size of NV data
-    void            *data           // OUT: data buffer
+    NV_INDEX            *nvIndex,       // IN: the in RAM index descriptor
+    NV_REF               locator,       // IN: where the data is located
+    UINT32               offset,        // IN: offset of NV data
+    UINT16               size,          // IN: number of octets of NV data to read
+    void                *data           // OUT: data buffer
     );
+
+//*** NvHashIndexData()
+// This function adds Index data to a hash. It does this in parts to avoid large stack
+// buffers.
+void
+NvHashIndexData(
+    HASH_STATE          *hashState,     // IN: Initialized hash state
+    NV_INDEX            *nvIndex,       // IN: Index
+    NV_REF               locator,       // IN: where the data is located
+    UINT32               offset,        // IN: starting offset
+    UINT16               size           // IN: amount to hash
+);
 
 //*** NvGetUINT64Data()
 // Get data in integer format of a bit or counter NV Index.
@@ -168,8 +180,8 @@ NvGetIndexData(
 // previously has been written.
 UINT64
 NvGetUINT64Data(
-    NV_INDEX        *nvIndex,       // IN: the in RAM index descriptor
-    NV_REF           locator        // IN: where index exists in NV
+    NV_INDEX            *nvIndex,       // IN: the in RAM index descriptor
+    NV_REF               locator        // IN: where index exists in NV
     );
 
 //*** NvWriteIndexAttributes()

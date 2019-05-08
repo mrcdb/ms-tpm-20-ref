@@ -34,7 +34,7 @@
  */
 /*(Auto-generated)
  *  Created by TpmPrototypes; Version 3.0 July 18, 2017
- *  Date: Jun 16, 2018  Time: 08:35:57PM
+ *  Date: Jan 28, 2019  Time: 12:39:25AM
  */
 
 #ifndef    _OBJECT_SPT_FP_H_
@@ -88,7 +88,7 @@ CreateChecks(
 //                          with the scheme ID for keyed hash object
 //      TPM_RC_SYMMETRIC    a storage key with no symmetric algorithm specified; or
 //                          non-storage key with symmetric algorithm different from
-// ALG_NULL
+//                          TPM_ALG_NULL
 TPM_RC
 SchemeChecks(
     OBJECT          *parentObject,  // IN: parent (null if primary seed)
@@ -210,7 +210,7 @@ UnwrapOuter(
 void
 SensitiveToPrivate(
     TPMT_SENSITIVE  *sensitive,     // IN: sensitive structure
-    TPM2B           *name,          // IN: the name of the object
+    TPM2B_NAME      *name,          // IN: the name of the object
     OBJECT          *parent,        // IN: The parent object
     TPM_ALG_ID       nameAlg,       // IN: hash algorithm in public area.  This
                                     //     parameter is used when parentHandle is
