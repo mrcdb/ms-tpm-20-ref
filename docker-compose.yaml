@@ -1,0 +1,6 @@
+version: '3'
+services:
+  ms-tpm2.0-sim-builder:
+    build: .
+    volumes:
+      - ./build:/binary
